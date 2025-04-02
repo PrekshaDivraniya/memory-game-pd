@@ -16,13 +16,17 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
 
   const handleGridSize = (e) => {
-    const size = parseInt(e.target.value);
-    if (size >= 2 && size <= 10) setGridSize(size);
+    const value = e.target.value;
+    if (value === "" || (parseInt(value) >= 2 && parseInt(value) <= 10)) {
+      setGridSize(value === "" ? "" : parseInt(value));
+    }
   };
 
   const handleMoves = (e) => {
-    const maxMoves = parseInt(e.target.value);
-    if (maxMoves > 0) setMaxMoves(maxMoves);
+    const value = e.target.value;
+    if (value === "" || parseInt(value) >= 0) {
+      setMaxMoves(value === "" ? "" : parseInt(value));
+    }
   };
 
   const initializeGame = () => {
@@ -117,8 +121,11 @@ function App() {
           id="gridSize"
           min="2"
           max="10"
-          value={gridSize}
+          value={gridSize || ""}
           onChange={handleGridSize}
+          onBlur={() => {
+            if (gridSize === "" || isNaN(gridSize)) setGridSize(4); // Default
+          }}
           className="border-2 border-gray-300 rounded px-2 py-1"
         />
 
@@ -130,8 +137,11 @@ function App() {
           id="maxMoves"
           min="0"
           max="1000"
-          value={maxMoves}
+          value={maxMoves || ""}
           onChange={handleMoves}
+          onBlur={() => {
+            if (maxMoves === "" || isNaN(maxMoves)) setMaxMoves(0); // Default to unlimited
+          }}
           className="border-2 border-gray-300 rounded px-2 py-1"
         />
       </div>
